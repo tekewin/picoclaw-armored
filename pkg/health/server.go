@@ -44,10 +44,11 @@ func NewServer(host string, port int) *Server {
 
 	addr := fmt.Sprintf("%s:%d", host, port)
 	s.server = &http.Server{
-		Addr:         addr,
-		Handler:      mux,
-		ReadTimeout:  5 * time.Second,
-		WriteTimeout: 5 * time.Second,
+		Addr:              addr,
+		Handler:           mux,
+		ReadHeaderTimeout: 5 * time.Second,
+		ReadTimeout:       5 * time.Second,
+		WriteTimeout:      5 * time.Second,
 	}
 
 	return s
