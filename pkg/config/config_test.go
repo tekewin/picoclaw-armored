@@ -276,6 +276,9 @@ func TestDefaultConfig_Channels(t *testing.T) {
 	if cfg.Channels.WhatsApp.Enabled {
 		t.Error("WhatsApp should be disabled by default")
 	}
+	if cfg.Channels.Discord.Enabled {
+		t.Error("Discord should be disabled by default")
+	}
 }
 
 // TestDefaultConfig_WebTools verifies web tools config

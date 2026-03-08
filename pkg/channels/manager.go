@@ -215,6 +215,10 @@ func (m *Manager) initChannels() error {
 		}
 	}
 
+	if m.config.Channels.Discord.Enabled && m.config.Channels.Discord.Token != "" {
+		m.initChannel("discord", "Discord")
+	}
+
 	logger.InfoCF("channels", "Channel initialization completed", map[string]any{
 		"enabled_channels": len(m.channels),
 	})

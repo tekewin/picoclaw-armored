@@ -288,11 +288,12 @@ picoclaw agent -m "2+2 等于几？"
 
 ## 💬 聊天应用集成 (Chat Apps)
 
-PicoClaw 支持连接到 WhatsApp。
+PicoClaw 支持连接到 Discord 和 WhatsApp。
 
-| 渠道                 | 设置难度    |
-| -------------------- | ----------- |
-| **WhatsApp**         | ⭐ 简单     |
+| 渠道                 | 设置难度    | 特性说明                                  | 文档链接                                                                                                        |
+| -------------------- | ----------- | ----------------------------------------- | --------------------------------------------------------------------------------------------------------------- |
+| **Discord**          | ⭐ 简单     | Socket Mode，支持群组/私信，Bot 生态成熟  | [查看文档](docs/channels/discord/README.zh.md)                                                                  |
+| **WhatsApp**         | ⭐ 简单     | 支持原生和桥接模式                        |                                                                                                                 |
 
 ## <img src="assets/clawdchat-icon.png" width="24" height="24" alt="ClawdChat"> 加入 Agent 社交网络
 

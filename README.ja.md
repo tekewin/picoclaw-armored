@@ -249,10 +249,11 @@ picoclaw agent -m "What is 2+2?"
 
 ## 💬 チャットアプリ
 
-WhatsApp で PicoClaw と会話できます。
+Discord や WhatsApp で PicoClaw と会話できます。
 
 | チャネル | セットアップ |
 |---------|------------|
+| **Discord** | 簡単（Bot トークン + Intents） |
 | **WhatsApp** | 簡単 (ネイティブ: QR スキャン; または bridge URL) |
 
 

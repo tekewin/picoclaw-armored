@@ -293,11 +293,85 @@ That's it! You have a working AI assistant in 2 minutes.
 
 ## 💬 Chat Apps
 
-Talk to your picoclaw through WhatsApp
+Talk to your picoclaw through Discord or WhatsApp
 
 | Channel      | Setup                              |
 | ------------ | ---------------------------------- |
+| **Discord**  | Easy (bot token + intents)         |
 | **WhatsApp** | Easy (native: QR scan; or bridge URL) |
+
+<details>
+<summary><b>Discord</b></summary>
+
+**1. Create a bot**
+
+* Go to <https://discord.com/developers/applications>
+* Create an application → Bot → Add Bot
+* Copy the bot token
+
+**2. Enable intents**
+
+* In the Bot settings, enable **MESSAGE CONTENT INTENT**
+* (Optional) Enable **SERVER MEMBERS INTENT** if you plan to use allow lists based on member data
+
+**3. Get your User ID**
+* Discord Settings → Advanced → enable **Developer Mode**
+* Right-click your avatar → **Copy User ID**
+
+**4. Configure**
+
+```json
+{
+  "channels": {
+    "discord": {
+      "enabled": true,
+      "token": "YOUR_BOT_TOKEN",
+      "allow_from": ["YOUR_USER_ID"]
+    }
+  }
+}
+```
+
+**5. Invite the bot**
+
+* OAuth2 → URL Generator
+* Scopes: `bot`
+* Bot Permissions: `Send Messages`, `Read Message History`
+* Open the generated invite URL and add the bot to your server
+
+**Optional: Group trigger mode**
+
+By default the bot responds to all messages in a server channel. To restrict responses to @-mentions only, add:
+
+```json
+{
+  "channels": {
+    "discord": {
+      "group_trigger": { "mention_only": true }
+    }
+  }
+}
+```
+
+You can also trigger by keyword prefixes (e.g. `!bot`):
+
+```json
+{
+  "channels": {
+    "discord": {
+      "group_trigger": { "prefixes": ["!bot"] }
+    }
+  }
+}
+```
+
+**6. Run**
+
+```bash
+picoclaw gateway
+```
+
+</details>
 
 <details>
 <summary><b>WhatsApp</b> (native via whatsmeow)</summary>

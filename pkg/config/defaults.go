@@ -49,6 +49,12 @@ func DefaultConfig() *Config {
 				SessionStorePath: "",
 				AllowFrom:        FlexibleStringSlice{},
 			},
+			Discord: DiscordConfig{
+				Enabled:     false,
+				Token:       "",
+				AllowFrom:   FlexibleStringSlice{},
+				MentionOnly: false,
+			},
 		},
 		Providers: ProvidersConfig{
 			OpenAI: OpenAIProviderConfig{WebSearch: true},

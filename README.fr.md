@@ -280,10 +280,11 @@ Et voilà ! Vous avez un assistant IA fonctionnel en 2 minutes.
 
 ## 💬 Applications de Chat
 
-Discutez avec votre PicoClaw via WhatsApp.
+Discutez avec votre PicoClaw via Discord ou WhatsApp.
 
 | Canal        | Configuration                          |
 | ------------ | -------------------------------------- |
+| **Discord**  | Facile (token bot + intents)           |
 | **WhatsApp** | Facile (natif: scan QR; ou bridge URL) |
 
 

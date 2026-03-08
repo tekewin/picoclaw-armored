@@ -273,10 +273,11 @@ Pronto! Você tem um assistente de IA funcionando em 2 minutos.
 
 ## 💬 Integração com Apps de Chat
 
-Converse com seu PicoClaw via WhatsApp.
+Converse com seu PicoClaw via Discord ou WhatsApp.
 
 | Canal | Nível de Configuração |
 | --- | --- |
+| **Discord** | Fácil (bot token + intents) |
 | **WhatsApp** | Fácil (nativo: scan QR; ou bridge URL) |
 
 

@@ -31,6 +31,12 @@ func refreshChannelMenuFromState(menu *tview.List, s *appState) {
 			s.config.Channels.WhatsApp.Enabled,
 			func() { s.push("whatsapp_form", s.whatsappForm()) },
 		),
+		channelItem(
+			"Discord",
+			"Configure Discord Bot",
+			s.config.Channels.Discord.Enabled,
+			func() { s.push("discord_form", s.discordForm()) },
+		),
 		{Label: "Back", Description: "Return to main menu", Action: func() { s.pop() }},
 	}
 
@@ -52,6 +58,19 @@ func (s *appState) whatsappForm() tview.Primitive {
 	form := baseChannelForm("WhatsApp", cfg.Enabled, s.makeChannelOnEnabled(&cfg.Enabled))
 	form.AddInputField("Bridge URL", cfg.BridgeURL, 128, nil, func(text string) {
 		cfg.BridgeURL = strings.TrimSpace(text)
+	})
+	addAllowFromField(form, &cfg.AllowFrom)
+	return wrapWithBack(form, s)
+}
+
+func (s *appState) discordForm() tview.Primitive {
+	cfg := &s.config.Channels.Discord
+	form := baseChannelForm("Discord", cfg.Enabled, s.makeChannelOnEnabled(&cfg.Enabled))
+	form.AddInputField("Token", cfg.Token, 128, nil, func(text string) {
+		cfg.Token = strings.TrimSpace(text)
+	})
+	form.AddCheckbox("Mention Only", cfg.MentionOnly, func(checked bool) {
+		cfg.MentionOnly = checked
 	})
 	addAllowFromField(form, &cfg.AllowFrom)
 	return wrapWithBack(form, s)

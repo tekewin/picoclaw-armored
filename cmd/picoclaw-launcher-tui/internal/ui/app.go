@@ -421,7 +421,7 @@ func (s *appState) isActiveModelValid() bool {
 
 func (s *appState) hasEnabledChannel() bool {
 	c := s.config.Channels
-	return c.WhatsApp.Enabled
+	return c.WhatsApp.Enabled || c.Discord.Enabled
 }
 
 func (s *appState) confirmApplyOrDiscard(onApply func(), onDiscard func()) {

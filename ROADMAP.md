@@ -48,7 +48,7 @@
 
 
 * **Channel**
-  * **IM Matrix**: WhatsApp, Email
+  * **IM Matrix**: Discord, WhatsApp, Email
   * **Standards**: Support for the **OneBot** protocol.
   * [**attachment**](https://github.com/sipeed/picoclaw/issues/348): Native handling of images, audio, and video attachments.
 

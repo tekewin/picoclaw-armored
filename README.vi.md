@@ -248,10 +248,11 @@ Vậy là xong! Bạn đã có một trợ lý AI hoạt động chỉ trong 2 p
 
 ## 💬 Tích hợp ứng dụng Chat
 
-Trò chuyện với PicoClaw qua WhatsApp.
+Trò chuyện với PicoClaw qua Discord hoặc WhatsApp.
 
 | Kênh | Mức độ thiết lập |
 | --- | --- |
+| **Discord** | Dễ (bot token + intents) |
 | **WhatsApp** | Dễ (native: QR scan; or bridge URL) |
 
 

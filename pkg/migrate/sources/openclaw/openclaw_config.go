@@ -983,6 +983,11 @@ func (c ChannelsConfig) ToStandardChannels() config.ChannelsConfig {
 			Enabled:   c.WhatsApp.Enabled,
 			BridgeURL: c.WhatsApp.BridgeURL,
 		},
+		Discord: config.DiscordConfig{
+			Enabled:     c.Discord.Enabled,
+			Token:       c.Discord.Token,
+			MentionOnly: c.Discord.MentionOnly,
+		},
 	}
 }
 
