@@ -15,6 +15,8 @@ import (
 	"time"
 )
 
+var skipSSRFCheckForTests = false
+
 const (
 	userAgent = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36"
 
@@ -672,6 +674,9 @@ func NewWebFetchToolWithProxy(maxChars int, proxy string, fetchLimitBytes int64)
 // and cloud metadata endpoints. This prevents prompt-injected instructions from
 // exfiltrating data via the local launcher API or cloud instance metadata.
 func rejectSSRFTarget(u *url.URL) error {
+	if skipSSRFCheckForTests {
+		return nil
+	}
 	hostname := u.Hostname()
 
 	// Resolve the hostname to catch DNS-based SSRF.

@@ -205,12 +205,25 @@ func (d *AgentDefaults) GetModelName() string {
 
 type ChannelsConfig struct {
 	WhatsApp WhatsAppConfig `json:"whatsapp"`
+	Discord  DiscordConfig  `json:"discord"`
 }
 
 // GroupTriggerConfig controls when the bot responds in group chats.
 type GroupTriggerConfig struct {
 	MentionOnly bool     `json:"mention_only,omitempty"`
 	Prefixes    []string `json:"prefixes,omitempty"`
+}
+
+type DiscordConfig struct {
+	Enabled            bool                `json:"enabled"                 env:"PICOCLAW_CHANNELS_DISCORD_ENABLED"`
+	Token              string              `json:"token"                   env:"PICOCLAW_CHANNELS_DISCORD_TOKEN"`
+	Proxy              string              `json:"proxy"                   env:"PICOCLAW_CHANNELS_DISCORD_PROXY"`
+	AllowFrom          FlexibleStringSlice `json:"allow_from"              env:"PICOCLAW_CHANNELS_DISCORD_ALLOW_FROM"`
+	MentionOnly        bool                `json:"mention_only"            env:"PICOCLAW_CHANNELS_DISCORD_MENTION_ONLY"`
+	GroupTrigger       GroupTriggerConfig  `json:"group_trigger,omitempty"`
+	Typing             TypingConfig        `json:"typing,omitempty"`
+	Placeholder        PlaceholderConfig   `json:"placeholder,omitempty"`
+	ReasoningChannelID string              `json:"reasoning_channel_id"    env:"PICOCLAW_CHANNELS_DISCORD_REASONING_CHANNEL_ID"`
 }
 
 // TypingConfig controls typing indicator behavior (Phase 10).
@@ -533,7 +546,10 @@ func LoadConfig(path string) (*Config, error) {
 }
 
 func (c *Config) migrateChannelConfigs() {
-	// No channels remaining that need migration
+	// Discord: mention_only -> group_trigger.mention_only
+	if c.Channels.Discord.MentionOnly && !c.Channels.Discord.GroupTrigger.MentionOnly {
+		c.Channels.Discord.GroupTrigger.MentionOnly = true
+	}
 }
 
 func SaveConfig(path string, cfg *Config) error {
