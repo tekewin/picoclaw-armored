@@ -14,7 +14,12 @@ import (
 	"github.com/sipeed/picoclaw/pkg/logger"
 )
 
+
 const testFetchLimit = int64(10 * 1024 * 1024)
+
+func init() {
+	skipSSRFCheckForTests = true
+}
 
 // TestWebTool_WebFetch_Success verifies successful URL fetching
 func TestWebTool_WebFetch_Success(t *testing.T) {

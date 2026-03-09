@@ -206,6 +206,10 @@ func (m *Manager) initChannel(name, displayName string) {
 func (m *Manager) initChannels() error {
 	logger.InfoC("channels", "Initializing channel manager")
 
+	if m.config.Channels.Discord.Enabled {
+		m.initChannel("discord", "Discord")
+	}
+
 	if m.config.Channels.WhatsApp.Enabled {
 		waCfg := m.config.Channels.WhatsApp
 		if waCfg.UseNative {

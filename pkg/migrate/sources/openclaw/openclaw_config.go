@@ -979,6 +979,11 @@ func (c *PicoClawConfig) ToStandardConfig() *config.Config {
 
 func (c ChannelsConfig) ToStandardChannels() config.ChannelsConfig {
 	return config.ChannelsConfig{
+		Discord: config.DiscordConfig{
+			Enabled:     c.Discord.Enabled,
+			Token:       c.Discord.Token,
+			MentionOnly: c.Discord.MentionOnly,
+		},
 		WhatsApp: config.WhatsAppConfig{
 			Enabled:   c.WhatsApp.Enabled,
 			BridgeURL: c.WhatsApp.BridgeURL,
