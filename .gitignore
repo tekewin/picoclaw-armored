@@ -19,7 +19,6 @@ cmd/**/workspace
 config.json
 sessions/
 build/
-workspace/memory/MEMORY.md
 
 # Coverage
 
