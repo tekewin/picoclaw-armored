@@ -1,9 +1,9 @@
 <div align="center">
-  <img src="assets/logo.jpg" alt="PicoClaw" width="512">
+  <img src="assets/picoclaw-armored.png" alt="PicoClaw" width="512">
 
-  <h1>PicoClaw: Ultra-Efficient AI Assistant in Go</h1>
+  <h1>PicoClaw Armored: Ultra-Efficient AI Assistant in Go (hardened)</h1>
 
-  <h3>$10 Hardware · 10MB RAM · 1s Boot · 皮皮虾，我们走！</h3>
+  <h3>$10 Hardware · 16MB RAM · 1s Boot · 皮皮虾，我们走！</h3>
 
   <p>
     <img src="https://img.shields.io/badge/Go-1.21+-00ADD8?style=flat&logo=go&logoColor=white" alt="Go">
@@ -23,9 +23,9 @@
 
 ---
 
-🦐 PicoClaw is an ultra-lightweight personal AI Assistant inspired by [nanobot](https://github.com/HKUDS/nanobot), refactored from the ground up in Go through a self-bootstrapping process, where the AI agent itself drove the entire architectural migration and code optimization.
+🦐 PicoClaw-armored is an ultra-lightweight personal AI Assistant inspired by [PicoClaw](https://github.com/sipeed/picoclaw), in turn inspired by [nanobot](https://github.com/HKUDS/nanobot), refactored from the ground up in Go through a self-bootstrapping process, where the AI agent itself drove the entire architectural migration and code optimization.
 
-⚡️ Runs on $10 hardware with <10MB RAM: That's 99% less memory than OpenClaw and 98% cheaper than a Mac mini!
+⚡️ Runs on $10 hardware with <16MB RAM: That's 99% less memory than OpenClaw and 98% cheaper than a Mac mini!
 
 <table align="center">
   <tr align="center">
@@ -50,7 +50,7 @@
 > * **OFFICIAL DOMAIN:** The **ONLY** official website is **[picoclaw.io](https://picoclaw.io)**, and company website is **[sipeed.com](https://sipeed.com)**
 > * **Warning:** Many `.ai/.org/.com/.net/...` domains are registered by third parties.
 > * **Warning:** picoclaw is in early development now and may have unresolved network security issues. Do not deploy to production environments before the v1.0 release.
-> * **Note:** picoclaw has recently merged a lot of PRs, which may result in a larger memory footprint (10–20MB) in the latest versions. We plan to prioritize resource optimization as soon as the current feature set reaches a stable state.
+> * **Note:** picoclaw has recently merged a lot of PRs, so the memory footprint is about 16MB in the latest versions. We plan to prioritize resource optimization as soon as the current feature set reaches a stable state.
 
 ## 📢 News
 
