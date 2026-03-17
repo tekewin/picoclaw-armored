@@ -39,12 +39,7 @@
 
 ## 📢 News
 
-2026-02-16 🎉 PicoClaw hit 12K stars in one week! Thank you all for your support! PicoClaw is growing faster than we ever imagined. Given the high volume of PRs, we urgently need community maintainers. Our volunteer roles and roadmap are officially posted [here](ROADMAP.md) —we can’t wait to have you on board!
-
-2026-02-13 🎉 PicoClaw hit 5000 stars in 4days! Thank you for the community! There are so many PRs & issues coming in (during Chinese New Year holidays), we are finalizing the Project Roadmap and setting up the Developer Group to accelerate PicoClaw's development.  
-🚀 Call to Action: Please submit your feature requests in GitHub Discussions. We will review and prioritize them during our upcoming weekly meeting.
-
-2026-02-09 🎉 PicoClaw Launched! Built in 1 day to bring AI Agents to $10 hardware with <10MB RAM. 🦐 PicoClaw，Let's Go！
+2026-02-09 🎉 PicoClaw Launched! Built in 1 day to bring AI Agents to $10 hardware with <16MB RAM. 🦐 PicoClaw，Let's Go！
 
 ## ✨ Features
 
@@ -61,7 +56,7 @@
 |                               | OpenClaw      | NanoBot                  | **PicoClaw**                              |
 | ----------------------------- | ------------- | ------------------------ | ----------------------------------------- |
 | **Language**                  | TypeScript    | Python                   | **Go**                                    |
-| **RAM**                       | >1GB          | >100MB                   | **< 10MB**                                |
+| **RAM**                       | >1GB          | >100MB                   | **< 16MB**                                |
 | **Startup**</br>(0.8GHz core) | >500s         | >30s                     | **<1s**                                   |
 | **Cost**                      | Mac Mini 599$ | Most Linux SBC </br>~50$ | **Any Linux Board**</br>**As low as 10$** |
 
@@ -105,7 +100,7 @@ PicoClaw can be deployed on almost any Linux device!
 
 ### Install from source (latest features, recommended for development)
 
-# You might need to update your software repositories and/or install Golang before building picoclaw
+#### You might need to update your software repositories and/or install Golang before building picoclaw
 
 ```bash
 git clone https://github.com/sipeed/picoclaw.git
@@ -128,52 +123,6 @@ make install
 
 **Raspberry Pi Zero 2 W:** Use the binary that matches your OS: 32-bit Raspberry Pi OS → `make build-linux-arm` (output: `build/picoclaw-linux-arm`); 64-bit → `make build-linux-arm64` (output: `build/picoclaw-linux-arm64`). Or run `make build-pi-zero` to build both.
 
-## 🐳 Docker Compose
-
-You can also run PicoClaw using Docker Compose without installing anything locally.
-
-```bash
-# 1. Clone this repo
-git clone https://github.com/sipeed/picoclaw.git
-cd picoclaw
-
-# 2. First run — auto-generates docker/data/config.json then exits
-docker compose -f docker/docker-compose.yml --profile gateway up
-# The container prints "First-run setup complete." and stops.
-
-# 3. Set your API keys
-vim docker/data/config.json   # Set provider API keys, bot tokens, etc.
-
-# 4. Start
-docker compose -f docker/docker-compose.yml --profile gateway up -d
-```
-
-> [!TIP]
-> **Docker Users**: By default, the Gateway listens on `127.0.0.1` which is not accessible from the host. If you need to access the health endpoints or expose ports, set `PICOCLAW_GATEWAY_HOST=0.0.0.0` in your environment or update `config.json`.
-
-```bash
-# 5. Check logs
-docker compose -f docker/docker-compose.yml logs -f picoclaw-gateway
-
-# 6. Stop
-docker compose -f docker/docker-compose.yml --profile gateway down
-```
-
-### Agent Mode (One-shot)
-
-```bash
-# Ask a question
-docker compose -f docker/docker-compose.yml run --rm picoclaw-agent -m "What is 2+2?"
-
-# Interactive mode
-docker compose -f docker/docker-compose.yml run --rm picoclaw-agent
-```
-
-### Update
-
-```bash
-docker compose -f docker/docker-compose.yml pull
-docker compose -f docker/docker-compose.yml --profile gateway up -d
 ```
 
 ### 🚀 Quick Start
@@ -254,7 +203,54 @@ picoclaw agent -m "What is 2+2?"
 
 That's it! You have a working AI assistant in 2 minutes.
 
----
+## 🐳 Docker Compose
+
+You can also run PicoClaw using Docker Compose without installing anything locally.
+
+```bash
+# 1. Clone this repo
+git clone https://github.com/sipeed/picoclaw.git
+cd picoclaw
+
+# 2. First run — auto-generates docker/data/config.json then exits
+docker compose -f docker/docker-compose.yml --profile gateway up
+# The container prints "First-run setup complete." and stops.
+
+# 3. Set your API keys
+vim docker/data/config.json   # Set provider API keys, bot tokens, etc.
+
+# 4. Start
+docker compose -f docker/docker-compose.yml --profile gateway up -d
+```
+
+> [!TIP]
+> **Docker Users**: By default, the Gateway listens on `127.0.0.1` which is not accessible from the host. If you need to access the health endpoints or expose ports, set `PICOCLAW_GATEWAY_HOST=0.0.0.0` in your environment or update `config.json`.
+
+```bash
+# 5. Check logs
+docker compose -f docker/docker-compose.yml logs -f picoclaw-gateway
+
+# 6. Stop
+docker compose -f docker/docker-compose.yml --profile gateway down
+```
+
+### Agent Mode (One-shot)
+
+```bash
+# Ask a question
+docker compose -f docker/docker-compose.yml run --rm picoclaw-agent -m "What is 2+2?"
+
+# Interactive mode
+docker compose -f docker/docker-compose.yml run --rm picoclaw-agent
+```
+
+### Update
+
+```bash
+docker compose -f docker/docker-compose.yml pull
+docker compose -f docker/docker-compose.yml --profile gateway up -d
+```
+
 
 ## 💬 Chat Apps
 
