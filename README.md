@@ -27,6 +27,74 @@
 
 ⚡️ Runs on $10 hardware with <16MB RAM: That's 99% less memory than OpenClaw and 98% cheaper than a Mac mini!
 
+## [Full Documentation](https://docs.picoclaw.io/docs/)
+
+#### Note: the documentation is of the upstream picoclaw project. To reduce the attack surface, all channels have been removed from picoclaw-armored except Discord and WhatsApp.
+
+## Security Audit Changes (by severity)
+
+## Critical
+
+CRIT-1: Removed hardcoded Google OAuth client secret for antigravity. Credentials now read
+  from GOOGLE_CLIENT_ID / GOOGLE_CLIENT_SECRET env vars. Removed the
+  decodeBase64 helper that existed only to obfuscate the embedded secret. 
+
+CRIT-2 + MED-3: Added RequireLocalOrigin middleware to the launcher API
+  server. All /api/ and /auth/ routes reject requests whose Origin header
+  doesn't match http://localhost:18800 or http://127.0.0.1:18800, blocking
+  browser-based CSRF attacks.
+
+CRIT-3 + HIGH-5: Split shell deny patterns into absoluteDenyPatterns (always
+  enforced, cannot be overridden) and defaultDenyPatterns (overridable by
+  customAllowPatterns). Added missing patterns for nc/ncat, python -c,
+  perl -e, ruby -e, nohup, crontab, authorized_keys writes, shell startup
+  file writes, and base64-piped execution. |/bin/sh and |/bin/bash now
+  also covered.
+
+## High
+
+HIGH-1: Replaced cmd /c start with rundll32 url.dll,FileProtocolHandler on
+  Windows in OpenBrowser to prevent cmd.exe shell metacharacter injection.
+  Added URL scheme validation before opening any browser URL.
+
+HIGH-2: Applied io.LimitReader(resp.Body, 1<<20) to all io.ReadAll calls on
+  OAuth HTTP response bodies (RequestDeviceCode, LoginDeviceCode,
+  pollDeviceCode, RefreshAccessToken, ExchangeCodeForTokens,
+  fetchGoogleUserEmail) to prevent OOM from malicious token endpoints.
+
+HIGH-3: Added maxOAuthSessions = 50 cap. handleGoogleAntigravityLogin now
+  returns 429 when the limit is reached, preventing unbounded map growth.
+
+HIGH-4: Escaped all attacker-controlled strings written into HTML responses
+  in handleOAuthCallback using html.EscapeString, fixing reflected XSS via
+  the ?error= query parameter.
+
+HIGH-6: Replaced math/rand with crypto/rand in randomString() in
+  antigravity_provider.go using crypto/rand.Int + math/big.Int.
+
+## Medium
+
+MED-1: Added validGitHubRepo regex validation in InstallFromGitHub to reject
+  repo names containing path traversal, query strings, fragments, or
+  characters outside [A-Za-z0-9_.-].
+
+MED-2: Added rejectSSRFTarget() in WebFetchTool that resolves the hostname
+  and rejects loopback, link-local, private, and cloud metadata (169.254.x)
+  addresses, preventing prompt-injected SSRF to the launcher API or cloud
+  instance metadata endpoints.
+
+MED-6: Canonicalized path with filepath.Clean before running pattern matching
+  in whitelistFs.matches() to prevent regex bypass via embedded traversal
+  sequences like /allowed/path/../../../etc/shadow.
+
+NOTE ON GO DEPENDENCIES (TODO)
+  Possible runtime supply-chain risk in the skill download/install path.
+
+Audits performed with Claude Opus 4.5 and Gemini 3 Pro. Fifteen critical-to-medium
+vulnerabilities fixed across multiple passes. **All remote communication channels
+removed except WhatsApp and Discord removed.**
+
+
 > [!CAUTION]
 > **🚨 SECURITY & OFFICIAL CHANNELS / 安全声明**
 >
