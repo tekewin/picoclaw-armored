@@ -23,6 +23,8 @@ type ExecTool struct {
 	allowPatterns       []*regexp.Regexp
 	customAllowPatterns []*regexp.Regexp
 	restrictToWorkspace bool
+	allowReadPaths      []*regexp.Regexp
+	allowWritePaths     []*regexp.Regexp
 }
 
 var (
@@ -94,7 +96,8 @@ var (
 	}
 
 	// absolutePathPattern matches absolute file paths in commands (Unix and Windows).
-	absolutePathPattern = regexp.MustCompile(`[A-Za-z]:\\[^\\\"']+|/[^\s\"']+`)
+	// It uses prefixes to avoid matching mid-word slashes (like mail/message).
+	absolutePathPattern = regexp.MustCompile(`\b[A-Za-z]:\\[^\\\"';&|<>]+|(?:\s|^|['"=<>&|;])/[^\s\"';&|<>]+`)
 
 	// safePaths are kernel pseudo-devices that are always safe to reference in
 	// commands, regardless of workspace restriction. They contain no user data
@@ -117,6 +120,8 @@ func NewExecTool(workingDir string, restrict bool) (*ExecTool, error) {
 func NewExecToolWithConfig(workingDir string, restrict bool, config *config.Config) (*ExecTool, error) {
 	denyPatterns := make([]*regexp.Regexp, 0)
 	customAllowPatterns := make([]*regexp.Regexp, 0)
+	var allowReadPaths []*regexp.Regexp
+	var allowWritePaths []*regexp.Regexp
 
 	if config != nil {
 		execConfig := config.Tools.Exec
@@ -144,6 +149,20 @@ func NewExecToolWithConfig(workingDir string, restrict bool, config *config.Conf
 			}
 			customAllowPatterns = append(customAllowPatterns, re)
 		}
+
+		// Compile path whitelist patterns from config.
+		for _, p := range config.Tools.AllowReadPaths {
+			re, err := regexp.Compile(p)
+			if err == nil {
+				allowReadPaths = append(allowReadPaths, re)
+			}
+		}
+		for _, p := range config.Tools.AllowWritePaths {
+			re, err := regexp.Compile(p)
+			if err == nil {
+				allowWritePaths = append(allowWritePaths, re)
+			}
+		}
 	} else {
 		denyPatterns = append(denyPatterns, defaultDenyPatterns...)
 	}
@@ -155,8 +174,11 @@ func NewExecToolWithConfig(workingDir string, restrict bool, config *config.Conf
 		allowPatterns:       nil,
 		customAllowPatterns: customAllowPatterns,
 		restrictToWorkspace: restrict,
+		allowReadPaths:      allowReadPaths,
+		allowWritePaths:     allowWritePaths,
 	}, nil
 }
+
 
 func (t *ExecTool) Name() string {
 	return "exec"
@@ -358,12 +380,35 @@ func (t *ExecTool) guardCommand(command, cwd string) string {
 		matches := absolutePathPattern.FindAllString(cmd, -1)
 
 		for _, raw := range matches {
+			// Trim prefixes matched by the regex to get the actual path
+			raw = strings.TrimLeft(raw, " \t'\"=<>&|;")
 			p, err := filepath.Abs(raw)
 			if err != nil {
 				continue
 			}
 
 			if safePaths[p] {
+				continue
+			}
+
+			// Check if path is in allowReadPaths or allowWritePaths
+			allowedByWhitelist := false
+			for _, pattern := range t.allowReadPaths {
+				if pattern.MatchString(p) {
+					allowedByWhitelist = true
+					break
+				}
+			}
+			if !allowedByWhitelist {
+				for _, pattern := range t.allowWritePaths {
+					if pattern.MatchString(p) {
+						allowedByWhitelist = true
+						break
+					}
+				}
+			}
+
+			if allowedByWhitelist {
 				continue
 			}
 

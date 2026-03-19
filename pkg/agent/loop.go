@@ -141,8 +141,8 @@ func registerSharedTools(
 		}
 
 		// Hardware tools (I2C, SPI) - Linux only, returns error on other platforms
-		agent.Tools.Register(tools.NewI2CTool())
-		agent.Tools.Register(tools.NewSPITool())
+		// agent.Tools.Register(tools.NewI2CTool())
+		// agent.Tools.Register(tools.NewSPITool())
 
 		// Message tool
 		messageTool := tools.NewMessageTool()
