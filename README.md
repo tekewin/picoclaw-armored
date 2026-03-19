@@ -3,7 +3,7 @@
 
   <h1>PicoClaw Armored: Ultra-Efficient AI Assistant in Go (hardened)</h1>
 
-  <h3>$10 Hardware · 16MB RAM · 1s Boot · 皮皮虾，我们走！</h3>
+  <h3>$10 Hardware · 16MB RAM · 1s Boot</h3>
 
   <p>
     <img src="https://img.shields.io/badge/Go-1.21+-00ADD8?style=flat&logo=go&logoColor=white" alt="Go">
@@ -91,9 +91,11 @@ NOTE ON GO DEPENDENCIES (TODO)
   Possible runtime supply-chain risk in the skill download/install path.
 
 Audits performed with Claude Opus 4.5 and Gemini 3 Pro. Fifteen critical-to-medium
-vulnerabilities fixed across multiple passes. **All remote communication channels
-removed except WhatsApp and Discord removed.**
+vulnerabilities fixed across multiple passes.
 
+## All remote communication channels removed except WhatsApp and Discord.
+
+---
 
 > [!CAUTION]
 > **🚨 SECURITY & OFFICIAL CHANNELS / 安全声明**
@@ -151,18 +153,6 @@ removed except WhatsApp and Discord removed.**
     <td align="center">Discovery • Insights • Trends</td>
   </tr>
 </table>
-
-### 🐜 Innovative Low-Footprint Deploy
-
-PicoClaw can be deployed on almost any Linux device!
-
-- $9.9 [LicheeRV-Nano](https://www.aliexpress.com/item/1005006519668532.html) E(Ethernet) or W(WiFi6) version, for Minimal Home Assistant
-- $30~50 [NanoKVM](https://www.aliexpress.com/item/1005007369816019.html), or $100 [NanoKVM-Pro](https://www.aliexpress.com/item/1005010048471263.html) for Automated Server Maintenance
-- $50 [MaixCAM](https://www.aliexpress.com/item/1005008053333693.html) or $100 [MaixCAM2](https://www.kickstarter.com/projects/zepan/maixcam2-build-your-next-gen-4k-ai-camera) for Smart Monitoring
-
-<https://private-user-images.githubusercontent.com/83055338/547056448-e7b031ff-d6f5-4468-bcca-5726b6fecb5c.mp4>
-
-🌟 More Deployment Cases Await！
 
 ## 📦 Install
 
@@ -327,6 +317,7 @@ Talk to your picoclaw through WhatsApp
 | Channel      | Setup                              |
 | ------------ | ---------------------------------- |
 | **WhatsApp** | Easy (native: QR scan; or bridge URL) |
+| **Discord**  | Moderate (bot token)               |
 
 <details>
 <summary><b>WhatsApp</b> (native via whatsmeow)</summary>
@@ -917,3 +908,15 @@ Some providers (like Zhipu) have content filtering. Try rephrasing your query or
 | **Brave Search** | 2000 queries/month  | Web search functionality              |
 | **Groq**         | Free tier available | Fast inference (Llama, Mixtral)       |
 | **Cerebras**     | Free tier available | Fast inference (Llama, Qwen, etc.)    |
+
+### 🐜 Innovative Low-Footprint Deploy
+
+---
+
+PicoClaw can be deployed on almost any Linux device!
+
+- $9.9 [LicheeRV-Nano](https://www.aliexpress.com/item/1005006519668532.html) E(Ethernet) or W(WiFi6) version, for Minimal Home Assistant
+- $30~50 [NanoKVM](https://www.aliexpress.com/item/1005007369816019.html), or $100 [NanoKVM-Pro](https://www.aliexpress.com/item/1005010048471263.html) for Automated Server Maintenance
+- $50 [MaixCAM](https://www.aliexpress.com/item/1005008053333693.html) or $100 [MaixCAM2](https://www.kickstarter.com/projects/zepan/maixcam2-build-your-next-gen-4k-ai-camera) for Smart Monitoring
+
+<https://private-user-images.githubusercontent.com/83055338/547056448-e7b031ff-d6f5-4468-bcca-5726b6fecb5c.mp4>
