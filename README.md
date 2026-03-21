@@ -635,8 +635,6 @@ This design also enables **multi-agent support** with flexible provider selectio
 | **LiteLLM Proxy**   | `litellm/`        | `http://localhost:4000/v1                           | OpenAI    | Your LiteLLM proxy key                                            |
 | **VLLM**            | `vllm/`           | `http://localhost:8000/v1`                          | OpenAI    | Local                                                            |
 | **Cerebras**        | `cerebras/`       | `https://api.cerebras.ai/v1`                        | OpenAI    | [Get Key](https://cerebras.ai)                                   |
-| **火山引擎**        | `volcengine/`     | `https://ark.cn-beijing.volces.com/api/v3`          | OpenAI    | [Get Key](https://console.volcengine.com)                        |
-| **神算云**          | `shengsuanyun/`   | `https://router.shengsuanyun.com/api/v1`            | OpenAI    | -                                                                |
 | **Antigravity**     | `antigravity/`    | Google Cloud                                        | Custom    | OAuth only                                                       |
 | **GitHub Copilot**  | `github-copilot/` | `localhost:4321`                                    | gRPC      | -                                                                |
 
@@ -733,19 +731,6 @@ This design also enables **multi-agent support** with flexible provider selectio
   "request_timeout": 300
 }
 ```
-
-**LiteLLM Proxy**
-
-```json
-{
-  "model_name": "lite-gpt4",
-  "model": "litellm/lite-gpt4",
-  "api_base": "http://localhost:4000/v1",
-  "api_key": "sk-..."
-}
-```
-
-PicoClaw strips only the outer `litellm/` prefix before sending the request, so proxy aliases like `litellm/lite-gpt4` send `lite-gpt4`, while `litellm/openai/gpt-4o` sends `openai/gpt-4o`.
 
 #### Load Balancing
 
