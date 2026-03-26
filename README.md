@@ -29,7 +29,7 @@
 
 ## [Full Documentation](https://docs.picoclaw.io/docs/)
 
-#### Note: the documentation is of the upstream picoclaw project. To reduce the attack surface, all channels have been removed from picoclaw-armored except Discord and WhatsApp.
+#### Note: the documentation is of the upstream picoclaw project. To reduce the attack surface, all channels have been removed from picoclaw-armored except WhatsApp and Discord.
 
 ## Security Audit Changes (by severity)
 
