@@ -79,9 +79,17 @@ func agentCmd(message, sessionKey, model string, debug bool) error {
 func interactiveMode(agentLoop *agent.AgentLoop, sessionKey string) {
 	prompt := fmt.Sprintf("%s You: ", internal.Logo)
 
+	var historyFile string
+	if home, err := os.UserHomeDir(); err == nil {
+		dir := filepath.Join(home, ".picoclaw")
+		if mkErr := os.MkdirAll(dir, 0700); mkErr == nil {
+			historyFile = filepath.Join(dir, "history")
+		}
+	}
+
 	rl, err := readline.NewEx(&readline.Config{
 		Prompt:          prompt,
-		HistoryFile:     filepath.Join(os.TempDir(), ".picoclaw_history"),
+		HistoryFile:     historyFile,
 		HistoryLimit:    100,
 		InterruptPrompt: "^C",
 		EOFPrompt:       "exit",
