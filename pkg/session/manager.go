@@ -12,11 +12,14 @@ import (
 )
 
 type Session struct {
-	Key      string              `json:"key"`
-	Messages []providers.Message `json:"messages"`
-	Summary  string              `json:"summary,omitempty"`
-	Created  time.Time           `json:"created"`
-	Updated  time.Time           `json:"updated"`
+	Key               string              `json:"key"`
+	Messages          []providers.Message `json:"messages"`
+	Summary           string              `json:"summary,omitempty"`
+	Created           time.Time           `json:"created"`
+	Updated           time.Time           `json:"updated"`
+	TokensInputToday  int                 `json:"tokens_input_today,omitempty"`
+	TokensOutputToday int                 `json:"tokens_output_today,omitempty"`
+	TokensDate        string              `json:"tokens_date,omitempty"`
 }
 
 type SessionManager struct {
@@ -178,10 +181,13 @@ func (sm *SessionManager) Save(key string) error {
 	}
 
 	snapshot := Session{
-		Key:     stored.Key,
-		Summary: stored.Summary,
-		Created: stored.Created,
-		Updated: stored.Updated,
+		Key:               stored.Key,
+		Summary:           stored.Summary,
+		Created:           stored.Created,
+		Updated:           stored.Updated,
+		TokensInputToday:  stored.TokensInputToday,
+		TokensOutputToday: stored.TokensOutputToday,
+		TokensDate:        stored.TokensDate,
 	}
 	if len(stored.Messages) > 0 {
 		snapshot.Messages = make([]providers.Message, len(stored.Messages))
@@ -263,6 +269,29 @@ func (sm *SessionManager) loadSessions() error {
 	}
 
 	return nil
+}
+
+// RecordUsage adds prompt and completion token counts to the session's daily totals.
+// If the stored date is not today (UTC), the counters reset to zero before accumulating.
+func (sm *SessionManager) RecordUsage(key string, promptTokens, completionTokens int) {
+	today := time.Now().UTC().Format("2006-01-02")
+
+	sm.mu.Lock()
+	defer sm.mu.Unlock()
+
+	session, ok := sm.sessions[key]
+	if !ok {
+		return
+	}
+
+	if session.TokensDate != today {
+		session.TokensInputToday = 0
+		session.TokensOutputToday = 0
+		session.TokensDate = today
+	}
+
+	session.TokensInputToday += promptTokens
+	session.TokensOutputToday += completionTokens
 }
 
 // SetHistory updates the messages of a session.

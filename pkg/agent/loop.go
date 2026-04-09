@@ -952,6 +952,10 @@ func (al *AgentLoop) runLLMIteration(
 			return "", iteration, fmt.Errorf("LLM call failed after retries: %w", err)
 		}
 
+		if response.Usage != nil {
+			agent.Sessions.RecordUsage(opts.SessionKey, response.Usage.PromptTokens, response.Usage.CompletionTokens)
+		}
+
 		go al.handleReasoning(
 			ctx,
 			response.Reasoning,
