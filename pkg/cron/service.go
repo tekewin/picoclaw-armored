@@ -344,11 +344,39 @@ func (cs *CronService) AddJob(
 	name string,
 	schedule CronSchedule,
 	message string,
+	command string,
 	deliver bool,
 	channel, to string,
 ) (*CronJob, error) {
 	cs.mu.Lock()
 	defer cs.mu.Unlock()
+
+	// Reject duplicate: same message+command+schedule+channel+to among enabled jobs.
+	for i := range cs.store.Jobs {
+		j := &cs.store.Jobs[i]
+		if !j.Enabled {
+			continue
+		}
+		if j.Payload.Message != message || j.Payload.Command != command ||
+			j.Payload.Channel != channel || j.Payload.To != to ||
+			j.Schedule.Kind != schedule.Kind {
+			continue
+		}
+		switch schedule.Kind {
+		case "every":
+			if j.Schedule.EveryMS != nil && schedule.EveryMS != nil && *j.Schedule.EveryMS == *schedule.EveryMS {
+				return nil, fmt.Errorf("duplicate job: identical enabled job already exists (id: %s)", j.ID)
+			}
+		case "cron":
+			if j.Schedule.Expr == schedule.Expr {
+				return nil, fmt.Errorf("duplicate job: identical enabled job already exists (id: %s)", j.ID)
+			}
+		case "at":
+			if j.Schedule.AtMS != nil && schedule.AtMS != nil && *j.Schedule.AtMS == *schedule.AtMS {
+				return nil, fmt.Errorf("duplicate job: identical enabled job already exists (id: %s)", j.ID)
+			}
+		}
+	}
 
 	now := time.Now().UnixMilli()
 
@@ -356,13 +384,14 @@ func (cs *CronService) AddJob(
 	deleteAfterRun := (schedule.Kind == "at")
 
 	job := CronJob{
-		ID:       generateID(),
-		Name:     name,
-		Enabled:  true,
+		ID:      generateID(),
+		Name:    name,
+		Enabled: true,
 		Schedule: schedule,
 		Payload: CronPayload{
 			Kind:    "agent_turn",
 			Message: message,
+			Command: command,
 			Deliver: deliver,
 			Channel: channel,
 			To:      to,
