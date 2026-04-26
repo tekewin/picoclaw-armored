@@ -683,7 +683,9 @@ func (al *AgentLoop) runAgentLoop(
 	messages = resolveMediaRefs(messages, al.mediaStore, maxMediaSize)
 
 	// 3. Save user message to session
-	agent.Sessions.AddMessage(opts.SessionKey, "user", opts.UserMessage)
+	if !opts.NoHistory {
+		agent.Sessions.AddMessage(opts.SessionKey, "user", opts.UserMessage)
+	}
 
 	// 4. Run LLM iteration loop
 	finalContent, iteration, err := al.runLLMIteration(ctx, agent, messages, opts)
@@ -700,8 +702,10 @@ func (al *AgentLoop) runAgentLoop(
 	}
 
 	// 6. Save final assistant message to session
-	agent.Sessions.AddMessage(opts.SessionKey, "assistant", finalContent)
-	agent.Sessions.Save(opts.SessionKey)
+	if !opts.NoHistory {
+		agent.Sessions.AddMessage(opts.SessionKey, "assistant", finalContent)
+		agent.Sessions.Save(opts.SessionKey)
+	}
 
 	// 7. Optional: summarization
 	if opts.EnableSummary {
@@ -952,7 +956,7 @@ func (al *AgentLoop) runLLMIteration(
 			return "", iteration, fmt.Errorf("LLM call failed after retries: %w", err)
 		}
 
-		if response.Usage != nil {
+		if response.Usage != nil && !opts.NoHistory {
 			agent.Sessions.RecordUsage(opts.SessionKey, response.Usage.PromptTokens, response.Usage.CompletionTokens)
 		}
 
@@ -1034,7 +1038,9 @@ func (al *AgentLoop) runLLMIteration(
 		messages = append(messages, assistantMsg)
 
 		// Save assistant message with tool calls to session
-		agent.Sessions.AddFullMessage(opts.SessionKey, assistantMsg)
+		if !opts.NoHistory {
+			agent.Sessions.AddFullMessage(opts.SessionKey, assistantMsg)
+		}
 
 		// Execute tool calls in parallel
 		type indexedAgentResult struct {
@@ -1136,7 +1142,9 @@ func (al *AgentLoop) runLLMIteration(
 			messages = append(messages, toolResultMsg)
 
 			// Save tool result message to session
-			agent.Sessions.AddFullMessage(opts.SessionKey, toolResultMsg)
+			if !opts.NoHistory {
+				agent.Sessions.AddFullMessage(opts.SessionKey, toolResultMsg)
+			}
 		}
 	}
 
